@@ -32,9 +32,13 @@ def login():
     # Remember_me= wait.until (EC.element_to_be_clickable((By.XPATH,'//*[@id="login"]/div/div/div/div[3]/div[1]/div/span')))
     # Remember_me.click()
 
-    login_button = wait.until(EC.element_to_be_clickable((By.ID,'submitBTN')))
-    login_button.click()
+    Hide_cookie= driver.find_element(By.XPATH, "//*[@id='cookie_stop']")
+    Hide_cookie.click()
 
+
+    login_button = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login"]/div/div/div/div[4]/div[1]')))
+    login_button.click()
+    time.sleep(10)
 
 try:
     enter_the_app()

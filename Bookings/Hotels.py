@@ -51,32 +51,43 @@ def login():
 
     
 
-def check_flights():
-    flights_menu = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="navbarSupportedContent"]/div[1]/ul/li[1]/a')))
-    flights_menu.click()
+def check_Hotels():
+    hotels_menu = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="navbarSupportedContent"]/div[1]/ul/li[2]/a')))
+    hotels_menu.click()
+    time.sleep(2)  # Let the Hotels page load
 
-    time.sleep(2)  # Wait for the page to load
+    # Verify Hotels page
+    assert wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="fadein"]/main/section[1]/section/div/h2/strong'))).text 
+    print("Navigated to the Hotels page successfully")
 
-    # Verify that the flights page is displayed
-    assert wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="fadein"]/main/section/section/div/h2/strong'))).text 
-    print("Navigated to the flights page successfully")
+    # Step 1: Click the city dropdown
+    city_dropdown = wait.until(EC.element_to_be_clickable((By.ID, "select2-hotels_city-container")))
+    city_dropdown.click()
 
-    fly_from = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="onereturn"]/div[1]/div/input')))
-    fly_from.send_keys("London")
+    # Step 2: Enter city name in the search input
+    city_input = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "select2-search__field")))
+    city_input.send_keys("Dubai")
 
-    wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="onereturn"]/div[1]/div/div/div[1]'))).click()
+    # Step 3: Select the first result
+    first_result = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="select2-hotels_city-results"]/li')))
+    first_result.click()
 
-    fly_to = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="onereturn"]/div[2]/div[2]/input')))
-    fly_to.send_keys("Dubai")
+    # Step 4: Enter check-in and check-out dates
+    check_in_date = wait.until(EC.element_to_be_clickable((By.ID,'checkin'))) 
+    check_in_date.clear()
+    check_in_date.send_keys("19-11-2025")
 
-    wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="onereturn"]/div[2]/div[2]/div/div[1]'))).click()
+    check_out_date = wait.until(EC.element_to_be_clickable((By.ID,'checkout'))) 
+    check_out_date.clear()
+    check_out_date.send_keys("20-11-2025")
 
-    search_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@id='flights-search']")))
+    # Step 5: Click search
+    search_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='hotels-search']/div/div[5]/button")))
     search_button.click()
-    time.sleep(7)  # Wait for search results to load
 
-    assert wait.until(EC.visibility_of_element_located((By.XPATH,'x//*[@id="fadein"]/main/section/div[2]/div[2]'))).text
-    print("Flight search results displayed successfully")
+    time.sleep(7)
+    print("Hotel search results displayed successfully")
+
 
 
 try:
@@ -84,7 +95,7 @@ try:
     print("Entered successfully")
     login()
     print("login successfully")
-    check_flights()
+    check_Hotels()
     print("Flight page checked successfully")
 except Exception as e:
     print ( "failed:", e)
