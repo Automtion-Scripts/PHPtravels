@@ -11,7 +11,7 @@ driver.get("https://phptravels.net/?utm_source=chatgpt.com")
 driver.maximize_window()
 
 # Explicit wait
-wait = WebDriverWait(driver, 30)
+wait = WebDriverWait(driver, 60)
 actions = ActionChains(driver)
 
 # Accept cookie banner if present
@@ -70,33 +70,55 @@ def check_flights():
 
     time.sleep(7)  # Allow time to view results
 
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
+
 def book_flight():
     # Select first flight
     first_flight_select = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, "//*[@id='flight-list']/li[1]/form/div/div/div/div[2]/div/div/div[1]/button")))
+        (By.XPATH, "//*[@id='flight-list']/li[1]/form/div/div/div/div[2]/div/div/div[1]/button")
+    ))
     first_flight_select.click()
 
     # Wait for booking page
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="fadein"]/main/section/div/div[1]/h2')))
+    booking_header = wait.until(
+        EC.visibility_of_element_located((By.XPATH, '//*[@id="fadein"]/main/section/div/div[1]/h2'))
+    )
     print("Booking page loaded successfully")
 
     # Traveler information
-    Select(wait.until(EC.element_to_be_clickable((By.ID, 'title_1')))).select_by_visible_text('Miss')
-    wait.until(EC.presence_of_element_located((By.ID, 't-first-name-1'))).send_keys("Muskaan")
-    wait.until(EC.presence_of_element_located((By.ID, 't-last-name-1'))).send_keys("Magure")
-    Select(wait.until(EC.element_to_be_clickable((By.ID, 't-nationality-1')))).select_by_visible_text('India')
+    Select(wait.until(EC.element_to_be_clickable((By.ID, 'title_1')))).select_by_visible_text("Miss")
+
+    # First Name
+    first_name = wait.until(EC.presence_of_element_located((By.ID, 't-first-name-1')))
+    driver.execute_script("arguments[0].scrollIntoView(true);", first_name)
+    first_name.send_keys("Muskaan")
+
+    # Last Name
+    last_name = wait.until(EC.presence_of_element_located((By.ID, 't-last-name-1')))
+    last_name.send_keys("Magure")
+
+    # Nationality
+    Select(wait.until(EC.element_to_be_clickable((By.ID, 't-nationality-1')))).select_by_visible_text("India")
+
+    # Email
     wait.until(EC.presence_of_element_located((By.ID, 't-email-1'))).send_keys("muskaan@ma.com")
+
+    # Phone
     wait.until(EC.presence_of_element_located((By.ID, 't-phone-1'))).send_keys("90099874829")
 
-    # Agree terms
+    # Agree to terms
     wait.until(EC.element_to_be_clickable((By.NAME, 'agree'))).click()
 
-    # Click Book Now
+    # Book Now
     wait.until(EC.element_to_be_clickable((By.ID, 'booking'))).click()
 
-    # Wait for booking confirmation
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="fadein"]/main/section/div/div[1]/h2')))
-    print("Flight booked successfully and confirmation page displayed")
+    # Confirmation
+    confirmation_header = wait.until(
+        EC.visibility_of_element_located((By.XPATH, '//*[@id="fadein"]/main/section/div/div[1]/h2'))
+    )
+    print("✅ Flight booked successfully and confirmation page displayed:", confirmation_header.text)
+
 
 # ------------------------- Execute -------------------------
 
