@@ -50,6 +50,9 @@ def fill_form():
     # check_box = wait.until(EC.element_to_be_clickable((By.CLASS_NAME,'label-container')))
     # check_box.click()
 
+    Hide_cookie= driver.find_element(By.XPATH, "//*[@id='cookie_stop']")
+    Hide_cookie.click()
+    
     sign_button = wait.until(EC.element_to_be_clickable((By.ID,'submitBTN')))
     sign_button.click()
 

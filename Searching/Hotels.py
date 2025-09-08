@@ -9,12 +9,6 @@ driver = webdriver.Chrome()
 driver.get("https://phptravels.net/?utm_source=chatgpt.com")
 driver.maximize_window()
 
-
-# options = webdriver.ChromeOptions()
-# prefs = {"credentials_enable_service": False, "profile.password_manager_enabled": False}
-# options.add_experimental_option("prefs", prefs)
-# driver = webdriver.Chrome(options=options)
-
 # Explicit wait
 wait = WebDriverWait(driver, 20)
 Cookie_banner = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "cookie_disclaimer")))
@@ -48,8 +42,7 @@ def login():
     login_button = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="login"]/div/div/div/div[4]/div[1]')))
     login_button.click()
     time.sleep(20)
-
-    
+  
 
 def check_Hotels():
     hotels_menu = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="navbarSupportedContent"]/div[1]/ul/li[2]/a')))
