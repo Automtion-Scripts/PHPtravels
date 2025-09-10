@@ -51,7 +51,7 @@ def login():
     print("Logged in successfully")
    
 def check_Hotels():
-    hotels_menu = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="navbarSupportedContent"]/div[1]/ul/li[1]/a')))
+    hotels_menu = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="navbarSupportedContent"]/div[1]/ul/li[2]/a')))
     hotels_menu.click()
     time.sleep(2)  # Let the Hotels page load
 
